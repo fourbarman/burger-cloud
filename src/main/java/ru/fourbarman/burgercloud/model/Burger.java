@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Data
 public class Burger {
-    private final String name;
+    private String name;
     private List<Ingredient> ingredients;
 }
