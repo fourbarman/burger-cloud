@@ -3,10 +3,7 @@ package ru.fourbarman.burgercloud.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import ru.fourbarman.burgercloud.model.Burger;
 import ru.fourbarman.burgercloud.model.BurgerOrder;
 import ru.fourbarman.burgercloud.model.Ingredient;
@@ -32,6 +29,7 @@ public class DesignBurgerController {
                 new Ingredient("CHED", "Cheddar", Type.CHEESE),
                 new Ingredient("JACK", "Monterrey Jack", Type.CHEESE),
                 new Ingredient("TMTO", "Tomato", Type.VEGGIES),
+                new Ingredient("CCMBR", "Cucumber", Type.VEGGIES),
                 new Ingredient("SLSA", "Salsa", Type.SAUCE),
                 new Ingredient("SRCR", "Sour Cream", Type.SAUCE)
         );
@@ -58,6 +56,13 @@ public class DesignBurgerController {
     @GetMapping
     public String showDesignForm() {
         return "design";
+    }
+
+    @PostMapping
+    public String processBurger(Burger burger, @ModelAttribute BurgerOrder burgerOrder) {
+        burgerOrder.addBurger(burger);
+        log.info("Processing burger: {}", burger);
+        return "redirect:/orders/current";
     }
 
     private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
